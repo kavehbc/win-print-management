@@ -1,7 +1,7 @@
 import streamlit as st
-from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode, DataReturnMode, JsCode
+from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode, DataReturnMode
 import win32print
-from utils.printer_job import get_printers_jobs, set_job_command, last_job
+from utils.printer_job import get_printers_jobs, set_job_command
 
 
 def main():
