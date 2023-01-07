@@ -37,7 +37,7 @@ python -m api.py --port=5000
 
 ___
 ## GitHub Repo
-This project is open-source, and it is available on GitHub at [https://github.com/kavehbc/win-printer-management](https://github.com/kavehbc/win-printer-management).
+This project is open-source, and it is available on GitHub at [https://github.com/kavehbc/win-print-management](https://github.com/kavehbc/win-print-management).
 
 ## Developer(s)
 Kaveh Bakhtiyari - [Website](http://bakhtiyari.com) | [Medium](https://medium.com/@bakhtiyari)
