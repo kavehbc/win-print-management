@@ -1,0 +1,17 @@
+name: print-server
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.9
+  - pandas
+  - yaml
+  - pip
+  - pip:
+      - streamlit>=1.12.0
+      - streamlit-aggrid
+      - pywin32
+      - pyaml
+      - fastapi
+      - uvicorn
+      - python-multipart

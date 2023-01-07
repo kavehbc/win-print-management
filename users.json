@@ -1,0 +1,9 @@
+{
+    "kaveh": {
+        "username": "kaveh",
+        "full_name": "Kaveh Bakhtiyari",
+        "email": "this_is_a_test_email@gmail.com",
+        "password": "kaveh",
+        "disabled": false
+    }
+}
