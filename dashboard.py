@@ -9,7 +9,6 @@ def main():
     st.subheader("Printers")
 
     df_printers, df_jobs = get_printers_jobs()
-    st.write(df_printers.dtypes)
 
     gb = GridOptionsBuilder.from_dataframe(df_printers)
     gb.configure_selection("single")
