@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Query
 import win32print
 from utils.options import printers_list, command_list
-from utils.printer_job import get_printers_jobs, set_job_command
+from utils.printer_job import get_printers_jobs, set_job_command, last_job
 
 router = APIRouter(
     prefix="",
@@ -76,3 +76,16 @@ def execute_by_job_id(printer_name: str = Query(..., enum=printers_list(), descr
     set_job_command(printer_name, job_id, cmd_printer)
 
     return "OK"
+
+
+@router.post("/printer/last_job")
+def last_job_by_printer_name(printer_name: str = Query(..., enum=printers_list(), description="Printer Name")):
+    """
+    This returns the last JobID and Submitted date/time by printer name \n
+    :param printer_name: Printer Name \n
+    :return: job_id, submitted date/time
+    """
+
+    job_id, submitted_date_time = last_job(printer_name)
+
+    return {"job_id": job_id, "submitted": submitted_date_time}

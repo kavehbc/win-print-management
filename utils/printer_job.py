@@ -1,10 +1,11 @@
 import win32print
 import pandas as pd
 from datetime import datetime
+from dateutil import tz
 
 
 def restart_last_job(printer_name):
-    job_id = _last_job(printer_name)
+    job_id, _ = last_job(printer_name)
     set_job_command(printer_name, job_id, command=win32print.JOB_CONTROL_RESTART)
     return job_id
 
@@ -17,11 +18,23 @@ def set_job_command(printer_name, job_id, command=win32print.JOB_CONTROL_RESTART
     return 1
 
 
-def _last_job(printer_name):
+def last_job(printer_name):
     df_printers, df_jobs = get_printers_jobs()
-    df_jobs_filtered = df_jobs.loc[df_jobs["pPrinterName"] == printer_name]
-    job_id = df_jobs_filtered["JobId"].max()
-    return job_id
+
+    if df_jobs.shape[0] > 0:
+        df_jobs_filtered = df_jobs.loc[df_jobs["pPrinterName"] == printer_name]
+
+        if df_jobs_filtered.shape[0] > 0:
+            submitted_date_time = df_jobs_filtered["Submitted"].max()
+            job_id = df_jobs_filtered.loc[df_jobs_filtered["Submitted"] == submitted_date_time]["JobId"].max()
+        else:
+            submitted_date_time = None
+            job_id = None
+    else:
+        submitted_date_time = None
+        job_id = None
+
+    return job_id, submitted_date_time
 
 
 def _get_jobs(printer_name):
@@ -33,7 +46,17 @@ def _get_jobs(printer_name):
     for job in print_jobs:
         submitted = str(job["Submitted"])
         # sample format 2023-01-05 07:09:48.772000+00:00
-        job["Submitted"] = datetime.strptime(submitted.rstrip("+00:00"), '%Y-%m-%d %H:%M:%S.%f')
+        obj_dt = datetime.strptime(submitted.rstrip("+00:00"), '%Y-%m-%d %H:%M:%S.%f')
+
+        utc_zone = tz.tzutc()
+        local_zone = tz.tzlocal()
+
+        # set obj_dt to UTC
+        obj_dt = obj_dt.replace(tzinfo=utc_zone)
+        # convert from UTC to local timezone
+        local_date_time = obj_dt.astimezone(local_zone)
+
+        job["Submitted"] = local_date_time
         jobs.append(job)
 
     win32print.ClosePrinter(printer_handle)
@@ -74,4 +97,11 @@ def get_printers_jobs():
          'jobs': 'int',
          }
     )
+
+    # sorting printer names ASC
+    df_printers.sort_values(by='name', ascending=True, inplace=True)
+    # sorting jobs DESC
+    if df_jobs.shape[0] > 0:
+        df_jobs.sort_values(by=['Submitted', 'JobId'], ascending=False, inplace=True)
+
     return df_printers, df_jobs
