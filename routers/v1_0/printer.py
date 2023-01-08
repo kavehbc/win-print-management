@@ -73,9 +73,13 @@ def execute_by_job_id(printer_name: str = Query(..., enum=printers_list(), descr
     if command == "RESUME":
         cmd_printer = win32print.JOB_CONTROL_RESUME
 
-    set_job_command(printer_name, job_id, cmd_printer)
+    try:
+        set_job_command(printer_name, job_id, cmd_printer)
+        status = "OK"
+    except:
+        status = "Failed"
 
-    return "OK"
+    return {"status": status}
 
 
 @router.post("/printer/last_job")

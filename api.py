@@ -43,7 +43,7 @@ app.mount("/v1.0", v1_0)
 @click.command()
 @click.option('--port', default=5000, help='Server port')
 def run(port):
-    uvicorn.run("api:app", host="127.0.0.1", port=port, reload=True, access_log=False)
+    uvicorn.run("api:app", host="0.0.0.0", port=port, reload=True, access_log=False)
 
 
 if __name__ == "__main__":
