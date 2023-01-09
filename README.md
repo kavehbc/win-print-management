@@ -12,7 +12,7 @@ timeframe.
 
 This is a RESTful API developed by `FastAPI` to provide remote control over the printers and their jobs.
 
-> In order to monitor and control the printer's job, make sure to check `Keep printed documents` under the `Advanced` tab of the printer's settings.
+> In order to monitor and control the printer's job, make sure to enable `Keep printed documents` under the `Advanced` tab of the printer's settings.
 
 ## Execution
 We firstly need to create a `conda` environment
@@ -66,20 +66,20 @@ This project is open-source, and it is available on GitHub at [https://github.co
 
 ## Developer(s)
 Kaveh Bakhtiyari - [Website](http://bakhtiyari.com) | [Medium](https://medium.com/@bakhtiyari)
-  | [LinkedIn](https://www.linkedin.com/in/bakhtiyari) | [Github](https://github.com/kavehbc)
+  | [LinkedIn](https://www.linkedin.com/in/bakhtiyari) | [GitHub](https://github.com/kavehbc)
 
 ## Contribution
 Feel free to join the open-source community and contribute to this repository.
 
 ## References
 - [Streamlit](https://streamlit.io/)<br/>
-  Package to develop the dashboards
+  This package is used to develop the dashboards
 
 - [FastAPI](https://fastapi.tiangolo.com/)<br/>
-  The module to develop REST APIs
+  The module is used to develop REST APIs with Swagger UI
 
 - [Win32Print](http://timgolden.me.uk/pywin32-docs/win32print.html)<br/>
-  This kit is to meditate between the Python app and Windows Print APIs.
+  This library meditates between the Python app and Windows Print APIs.
 
 - [Uvicorn](https://www.uvicorn.org/)<br/>
-  An ASGI web server for Python
+  This is an ASGI web server for Python used for FastAPI
