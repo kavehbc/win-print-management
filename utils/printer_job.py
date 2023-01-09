@@ -56,6 +56,9 @@ def _get_jobs(printer_name):
         # convert from UTC to local timezone
         local_date_time = obj_dt.astimezone(local_zone)
 
+        # remove timezone from date/time
+        local_date_time = local_date_time.replace(tzinfo=None)
+
         job["Submitted"] = local_date_time
         jobs.append(job)
 
@@ -90,12 +93,19 @@ def get_printers_jobs():
         df_printers.rename(columns={'JobId': 'jobs'}, inplace=True)
         df_printers["jobs"].fillna(0, inplace=True)
 
+    # remove time zone and convert to datetime object
+    df_jobs["Submitted"] = pd.to_datetime(df_jobs["Submitted"])
+
     df_printers = df_printers[["name", "desc", "jobs"]]
     df_printers = df_printers.astype(
         {'name': 'string',
          'desc': 'string',
          'jobs': 'int',
          }
+    )
+
+    df_jobs = df_jobs.astype(
+        {'Submitted': 'datetime64[ns]'}
     )
 
     # sorting printer names ASC
