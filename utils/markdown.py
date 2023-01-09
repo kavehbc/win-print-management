@@ -3,7 +3,7 @@ import inspect
 import streamlit as st
 
 
-def show_readme(file_name):
+def show_markdown(file_name):
     current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
     parent_dir = os.path.dirname(current_dir)
     markdown_file_path = parent_dir + "/" + file_name
