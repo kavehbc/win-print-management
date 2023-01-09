@@ -14,7 +14,7 @@ router = APIRouter(
 # current_user: User = Depends(get_current_user)
 @router.get("/")
 def version():
-    return "v1.0"
+    return {"version": "v1.0"}
 
 
 @router.get("/printers")
@@ -38,7 +38,7 @@ def get_all_jobs():
 
 
 @router.post("/printer/jobs")
-def get_jobs_by_printer_name(printer_name: str = Query(None, description="Printer Name")):
+def get_jobs_by_printer_name(printer_name: str = Query(None, enum=printers_list(), description="Printer Name")):
     """
     Get the list of all jobs by a printer name \n
     :param printer_name: Printer Name \n
@@ -59,7 +59,7 @@ def execute_by_job_id(printer_name: str = Query(..., enum=printers_list(), descr
     :param printer_name: Printer Name \n
     :param job_id: Job ID (int) \n
     :param command: Printer command (e.g. RESTART, CANCEL, DELETE, PAUSE, RESUME) \n
-    :return: "OK"
+    :return: JSON with status of "OK" or "FAILED" (e.g. {"status": "OK"})
     """
 
     if command == "RESTART":
@@ -77,7 +77,7 @@ def execute_by_job_id(printer_name: str = Query(..., enum=printers_list(), descr
         set_job_command(printer_name, job_id, cmd_printer)
         status = "OK"
     except:
-        status = "Failed"
+        status = "FAILED"
 
     return {"status": status}
 
