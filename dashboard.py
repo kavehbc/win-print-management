@@ -6,19 +6,16 @@ import dashboards
 def main():
     options = {"printer": "Printer Management",
                "report": "Reporting & Visualization",
-               "status": "Printers Status",
                "about": "About"}
 
     selected_menu = st.sidebar.selectbox("Main Menu", options=get_dic_keys(options),
                                          format_func=lambda x: get_dic_code(options, x),
-                                         index=get_dic_index_by_key(options, "status"))
+                                         index=get_dic_index_by_key(options, "printer"))
 
     if selected_menu == "printer":
         dashboards.printer.main()
     elif selected_menu == "report":
         dashboards.report.main()
-    elif selected_menu == "status":
-        dashboards.status.main()
     elif selected_menu == "about":
         dashboards.help.main()
 

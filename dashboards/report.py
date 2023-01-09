@@ -42,7 +42,7 @@ def main():
     df_filtered_printers = df_printers.loc[(df_printers["name"].isin(selected_printers))]
 
     # Reporting Starts Here
-    st.subheader(f"Total Jobs: {df_filtered_jobs.shape[0]}")
+    st.success(f"Total Jobs: {df_filtered_jobs.shape[0]}")
 
     # Printers Jobs
     st.subheader("Printers Jobs")

@@ -4,6 +4,28 @@ from datetime import datetime
 from dateutil import tz
 
 
+def get_printer_details(printer_name):
+    handle = win32print.OpenPrinter(printer_name)
+    # http://timgolden.me.uk/pywin32-docs/win32print__GetPrinter_meth.html
+    printer_details = win32print.GetPrinter(handle)
+
+    printer_attributes = printer_details[13]
+    printer_status = printer_details[18]
+    printer_jobs = printer_details[19]
+
+    # https://learn.microsoft.com/en-us/windows/win32/printdocs/printer-info-2
+    # https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-rprn/1625e9d9-29e4-48f4-b83d-3bd0fdaea787
+    # 0x00000400 is the hex code of PRINTER_ATTRIBUTE_WORK_OFFLINE
+    printer_offline = (printer_attributes & 0x00000400) >> 10
+
+    return_dict = {"raw": printer_details,
+                   "attributes": printer_attributes,
+                   "status": printer_status,
+                   "jobs": printer_jobs,
+                   "live": not printer_offline}
+    return return_dict
+
+
 def restart_last_job(printer_name):
     job_id, _ = last_job(printer_name)
     set_job_command(printer_name, job_id, command=win32print.JOB_CONTROL_RESTART)
@@ -73,11 +95,21 @@ def get_printers_jobs():
     https://www.blog.pythonlibrary.org/2013/12/19/pywin32-monitor-print-queue/
     """
     printers = []
-    printers_columns = ["flags", "desc", "name", "comment"]
+    printers_columns = ["flags", "desc", "name", "comment", "live"]
     jobs = []
     for printer in win32print.EnumPrinters(win32print.PRINTER_ENUM_LOCAL,
                                            None, 1):
         flags, desc, printer_name, comment = printer
+
+        # converting tuple to list to make it modifiable
+        printer = list(printer)
+
+        # check if printer is live
+        printer_details = get_printer_details(printer_name)
+        # adding the printer's status to the list
+        printer.append(printer_details["live"])
+
+        # appending the printer info + status to the list of all printers
         printers.append(list(printer))
         jobs.extend(_get_jobs(printer_name))
 
@@ -96,11 +128,12 @@ def get_printers_jobs():
     # remove time zone and convert to datetime object
     df_jobs["Submitted"] = pd.to_datetime(df_jobs["Submitted"])
 
-    df_printers = df_printers[["name", "desc", "jobs"]]
+    df_printers = df_printers[["name", "desc", "jobs", "live"]]
     df_printers = df_printers.astype(
         {'name': 'string',
          'desc': 'string',
          'jobs': 'int',
+         'live': 'bool',
          }
     )
 
