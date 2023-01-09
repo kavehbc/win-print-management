@@ -3,7 +3,7 @@ from utils.markdown import show_readme
 
 
 def main():
-    show_readme("README.MD")
+    show_readme("README.md")
     st.markdown("___")
     st.subheader("LICENSE")
     show_readme("LICENSE")
