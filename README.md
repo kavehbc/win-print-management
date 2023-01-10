@@ -29,6 +29,13 @@ conda activate print-server
 
 Now, we can run the Streamlit dashboard and/or FastAPI.
 
+**Batch File**
+```bash
+run.bat
+```
+
+By running the above batch file, you will be given the option to select the application you wish to run.
+
 **Streamlit**
 ```bash
 streamlit run dashboard.py
@@ -36,7 +43,7 @@ streamlit run dashboard.py
 
 **FastAPI**
 ```bash
-python -m api.py --port=5000
+python api.py --port=5000
 ```
 
 ## Streamlit
@@ -79,7 +86,7 @@ Feel free to join the open-source community and contribute to this repository.
   The module is used to develop REST APIs with Swagger UI
 
 - [Win32Print](http://timgolden.me.uk/pywin32-docs/win32print.html)<br/>
-  This library meditates between the Python app and Windows Print APIs.
+  This library meditates between the Python app and Windows Print APIs
 
 - [Uvicorn](https://www.uvicorn.org/)<br/>
   This is an ASGI web server for Python used for FastAPI
